@@ -16,8 +16,5 @@ EXPOSE 5000
 # Command to run the application
 CMD ["python", "app.py"]
 
-RUN apt-get update && apt-get install -y zlib1g=1:1.2.11.dfsg-2
-RUN apt-get update && apt-get upgrade -y libgssapi-krb5-2
-RUN apt-get update && apt-get upgrade -y libk5crypto3
-RUN apt-get update && apt-get upgrade -y perl-base
+
 
