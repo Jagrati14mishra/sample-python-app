@@ -24,8 +24,8 @@ jobs:
       # Debug: Check secrets to make sure Docker Hub credentials are being pulled
       - name: Check Docker Hub Credentials
         run: |
-          echo "DOCKER_USERNAME=${{ jagratimishra1415 }}"
-          echo "DOCKER_PASSWORD=${{ jaggu_1405 }}"
+          echo "DOCKER_USERNAME=${{ secrets.DOCKER_USERNAME }}"
+          echo "DOCKER_PASSWORD=${{ secrets.DOCKER_PASSWORD }}"
 
       # Log in to Docker Hub using credentials stored in GitHub Secrets
       - name: Log in to Docker Hub
