@@ -44,16 +44,17 @@ jobs:
         run: |
           docker push docker.io/${{ secrets.DOCKER_USERNAME }}/sample-python-app:latest
 
-      # Install Trivy (vulnerability scanner)
+      # Install Trivy (fetch latest version dynamically)
       - name: Install Trivy
         run: |
           sudo apt-get update
-          sudo apt-get install -y wget
-          wget https://github.com/aquasecurity/trivy/releases/latest/download/trivy_0.51.2_Linux-64bit.tar.gz
-          tar zxvf trivy_0.51.2_Linux-64bit.tar.gz
+          sudo apt-get install -y wget curl
+          TRIVY_VERSION=$(curl -s https://api.github.com/repos/aquasecurity/trivy/releases/latest | jq -r .tag_name)
+          wget https://github.com/aquasecurity/trivy/releases/download/${TRIVY_VERSION}/trivy_${TRIVY_VERSION#v}_Linux-64bit.tar.gz
+          tar zxvf trivy_${TRIVY_VERSION#v}_Linux-64bit.tar.gz
           sudo mv trivy /usr/local/bin/
 
       # Scan the Docker image for vulnerabilities using Trivy
       - name: Scan Docker image with Trivy
         run: |
-          trivy image --exit-code 1 --no-prog
+          trivy image --exit-code 1 --no-progress docker.io/${{ secrets.DOCKER_USERNAME }}/sample-python-app:latest
