@@ -6,7 +6,7 @@ on:
       - main  # Trigger the pipeline when pushing to the main branch.
   pull_request:
     branches:
-      - main  # Trigger for pull requests to the main branch.
+      - main  # Trigger for pull requests to the main branch. 
 
 jobs:
   build:
