@@ -34,17 +34,7 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
-      # Build the Docker image
-      - name: Build Docker image
-        run: |
-          docker build -t docker.io/${{ secrets.DOCKER_USERNAME }}/sample-python-app:latest .
-
-      # Push the Docker image to Docker Hub
-      - name: Push Docker image to Docker Hub
-        run: |
-          docker push docker.io/${{ secrets.DOCKER_USERNAME }}/sample-python-app:latest
-
-      # Install Trivy (fetch latest version dynamically)
+   # Install Trivy (fetch latest version dynamically)
       - name: Install Trivy
         run: |
           sudo apt-get update
@@ -53,8 +43,22 @@ jobs:
           wget https://github.com/aquasecurity/trivy/releases/download/${TRIVY_VERSION}/trivy_${TRIVY_VERSION#v}_Linux-64bit.tar.gz
           tar zxvf trivy_${TRIVY_VERSION#v}_Linux-64bit.tar.gz
           sudo mv trivy /usr/local/bin/
+    
+      # Build the Docker image
+      - name: Build Docker image
+        run: |
+          docker build -t docker.io/${{ secrets.DOCKER_USERNAME }}/sample-python-app:latest .
 
-      # Scan the Docker image for vulnerabilities using Trivy
+ # Scan the Docker image for vulnerabilities using Trivy
       - name: Scan Docker image with Trivy
         run: |
           trivy image --exit-code 1 --no-progress docker.io/${{ secrets.DOCKER_USERNAME }}/sample-python-app:latest
+
+      # Push the Docker image to Docker Hub
+      - name: Push Docker image to Docker Hub
+        run: |
+          docker push docker.io/${{ secrets.DOCKER_USERNAME }}/sample-python-app:latest
+
+     
+
+     
