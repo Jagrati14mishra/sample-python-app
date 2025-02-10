@@ -35,14 +35,11 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}
 
    # Install Trivy (fetch latest version dynamically)
-      - name: Install Trivy
+      - name: Download and install Trivy
         run: |
-          sudo apt-get update
-          sudo apt-get install -y wget curl
-          TRIVY_VERSION=$(curl -s https://api.github.com/repos/aquasecurity/trivy/releases/latest | jq -r .tag_name)
-          wget https://github.com/aquasecurity/trivy/releases/download/${TRIVY_VERSION}/trivy_${TRIVY_VERSION#v}_Linux-64bit.tar.gz
-          tar zxvf trivy_${TRIVY_VERSION#v}_Linux-64bit.tar.gz
-          sudo mv trivy /usr/local/bin/
+          curl -s https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sudo bash
+          sudo mv ./bin/trivy /usr/local/bin/trivy  
+          trivy --version 
     
       # Build the Docker image
       - name: Build Docker image
